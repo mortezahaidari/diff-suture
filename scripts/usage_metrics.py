@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure local surgical-edit usage and estimate avoided rewrite payload."""
+"""Measure local Diff Suture usage and estimate avoided rewrite payload."""
 
 from __future__ import annotations
 
@@ -69,7 +69,7 @@ def can_write_directory(candidate_directory: Path) -> bool:
 
 
 def resolve_metrics_directory(repository_root: Path) -> Path:
-    override_directory = os.environ.get("SURGICAL_EDIT_METRICS_DIR")
+    override_directory = os.environ.get("DIFF_SUTURE_METRICS_DIR")
     candidate_directories: list[Path] = []
     if override_directory:
         candidate_directories.append(Path(override_directory).expanduser().resolve())
@@ -79,11 +79,11 @@ def resolve_metrics_directory(repository_root: Path) -> Path:
         git_directory = Path(git_directory_text)
         if not git_directory.is_absolute():
             git_directory = repository_root / git_directory
-        candidate_directories.append(git_directory.resolve() / "surgical-code-edits")
+        candidate_directories.append(git_directory.resolve() / "diff-suture")
     except MetricsError:
         pass
 
-    candidate_directories.append(repository_root / ".agent-data" / "surgical-code-edits")
+    candidate_directories.append(repository_root / ".agent-data" / "diff-suture")
     for candidate_directory in candidate_directories:
         if can_write_directory(candidate_directory):
             return candidate_directory
@@ -423,7 +423,7 @@ def print_human_summary(command_name: str, result: dict[str, Any]) -> None:
 
     if command_name == "finish":
         current_metrics = result["current"]
-        print(f"Surgical edit use: #{result['usage_number']}")
+        print(f"Diff Suture use: #{result['usage_number']}")
         print(f"Files changed: {current_metrics['files_changed']} / {current_metrics['files_observed']}")
         print(f"Lines changed: +{current_metrics['lines_added']} / -{current_metrics['lines_deleted']}")
         print(f"Estimated patch tokens: ~{current_metrics['estimated_patch_tokens']}")
@@ -441,7 +441,7 @@ def print_human_summary(command_name: str, result: dict[str, Any]) -> None:
 
 def build_argument_parser() -> argparse.ArgumentParser:
     argument_parser = argparse.ArgumentParser(
-        description="Record surgical edit usage and estimate avoided full-file rewrite tokens."
+        description="Record Diff Suture usage and estimate avoided full-file rewrite tokens."
     )
     command_parsers = argument_parser.add_subparsers(dest="command_name", required=True)
 

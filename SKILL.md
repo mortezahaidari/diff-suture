@@ -1,9 +1,9 @@
 ---
-name: surgical-code-edits
-description: "Make surgical edits to existing code: change or delete only the necessary lines, preserve unchanged text, and avoid whole-block or whole-file rewrites. Use for fixes, refactors, renames, and copy edits."
+name: diff-suture
+description: "Make precise edits to existing code: change or delete only the necessary lines, preserve unchanged text, and avoid whole-block or whole-file rewrites. Use for fixes, refactors, renames, and copy edits where minimal diff churn matters."
 ---
 
-# Surgical Code Edits
+# Diff Suture
 
 Minimize edit and context churn while preserving correctness. A small requested change should produce a proportionally small diff.
 

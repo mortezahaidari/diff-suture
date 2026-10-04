@@ -1,8 +1,8 @@
-# Surgical Code Edits
+# Diff Suture
 
-> A portable Agent Skill for precise, standards-compliant code edits with minimal diff churn and local projected token-savings telemetry.
+> Precise code edits with minimal diff churn and measurable context savings.
 
-`surgical-code-edits` teaches coding agents to make the smallest correct change without sacrificing readability, formatting standards, maintainability, or correctness.
+`diff-suture` teaches coding agents to make the smallest correct change without sacrificing readability, formatting standards, maintainability, or correctness.
 
 It is designed for the frustrating class of edits where a one-property, one-variable, or one-word change unexpectedly becomes a large delete-and-rewrite diff. The skill asks the agent to preserve unrelated content, edit the smallest useful construct, inspect the resulting diff, and correct unnecessary churn before finishing.
 
@@ -120,15 +120,15 @@ No third-party Python packages are required.
 Clone the repository once:
 
 ```bash
-git clone https://github.com/mortezahaidari/surgical-code-edits.git "$HOME/dev/surgical-code-edits"
+git clone https://github.com/mortezahaidari/diff-suture.git "$HOME/dev/diff-suture"
 ```
 
 Create shared Agent Skills and Claude Code links:
 
 ```bash
 mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
-ln -s "$HOME/dev/surgical-code-edits" "$HOME/.agents/skills/surgical-code-edits"
-ln -s "$HOME/dev/surgical-code-edits" "$HOME/.claude/skills/surgical-code-edits"
+ln -s "$HOME/dev/diff-suture" "$HOME/.agents/skills/diff-suture"
+ln -s "$HOME/dev/diff-suture" "$HOME/.claude/skills/diff-suture"
 ```
 
 The shared `.agents/skills` location is recognized by compatible clients such as Codex, Cursor, and GitHub Copilot. The `.claude/skills` link exposes the same canonical checkout to Claude Code.
@@ -139,16 +139,16 @@ If you use only one client, clone directly into its personal skill directory:
 
 ```bash
 # Claude Code
-git clone https://github.com/mortezahaidari/surgical-code-edits.git \
-  "$HOME/.claude/skills/surgical-code-edits"
+git clone https://github.com/mortezahaidari/diff-suture.git \
+  "$HOME/.claude/skills/diff-suture"
 
 # Codex
-git clone https://github.com/mortezahaidari/surgical-code-edits.git \
-  "$HOME/.codex/skills/surgical-code-edits"
+git clone https://github.com/mortezahaidari/diff-suture.git \
+  "$HOME/.codex/skills/diff-suture"
 
 # Shared Agent Skills location
-git clone https://github.com/mortezahaidari/surgical-code-edits.git \
-  "$HOME/.agents/skills/surgical-code-edits"
+git clone https://github.com/mortezahaidari/diff-suture.git \
+  "$HOME/.agents/skills/diff-suture"
 ```
 
 Do not install multiple independent copies unless you intend to update each copy separately.
@@ -158,9 +158,9 @@ Do not install multiple independent copies unless you intend to update each copy
 Teams can also place or link the repository under a project's supported skill directory, such as:
 
 ```text
-<project>/.agents/skills/surgical-code-edits/
-<project>/.claude/skills/surgical-code-edits/
-<project>/.codex/skills/surgical-code-edits/
+<project>/.agents/skills/diff-suture/
+<project>/.claude/skills/diff-suture/
+<project>/.codex/skills/diff-suture/
 ```
 
 Use a Git submodule or symlink if you want the skill maintained independently from the application repository.
@@ -170,14 +170,14 @@ Use a Git submodule or symlink if you want the skill maintained independently fr
 Explicit invocation names vary by client:
 
 ```text
-Codex:      $surgical-code-edits
-Claude Code: /surgical-code-edits
+Codex:       $diff-suture
+Claude Code: /diff-suture
 ```
 
 Example prompt:
 
 ```text
-Use surgical-code-edits to add the correction field without changing unrelated formatting.
+Use diff-suture to add the correction field without changing unrelated formatting.
 ```
 
 Compatible clients may also select the skill automatically when a task involves a focused modification to existing files.
@@ -273,7 +273,7 @@ python3 scripts/usage_metrics.py cancel <session-id>
 ### Example output
 
 ```text
-Surgical edit use: #4
+Diff Suture use: #4
 Files changed: 1 / 1
 Lines changed: +1 / -1
 Estimated patch tokens: ~123
@@ -289,9 +289,9 @@ All token figures are estimates and should always be presented with that qualifi
 
 The helper tries these storage locations in order:
 
-1. `SURGICAL_EDIT_METRICS_DIR`, when explicitly configured.
-2. `<git-directory>/surgical-code-edits/`.
-3. `<repository>/.agent-data/surgical-code-edits/` as a fallback.
+1. `DIFF_SUTURE_METRICS_DIR`, when explicitly configured.
+2. `<git-directory>/diff-suture/`.
+3. `<repository>/.agent-data/diff-suture/` as a fallback.
 
 During an active session, the helper stores temporary snapshots of explicitly tracked files. On `finish` or `cancel`, those snapshots are removed.
 
@@ -307,7 +307,8 @@ No network requests are made. No source content is written to persistent history
 ## Repository structure
 
 ```text
-surgical-code-edits/
+diff-suture/
+├── LICENSE                  Apache License 2.0
 ├── SKILL.md                 Agent-facing instructions and discovery metadata
 ├── README.md                Human-facing documentation
 ├── agents/
@@ -323,7 +324,7 @@ surgical-code-edits/
 If installed from a shared checkout:
 
 ```bash
-git -C "$HOME/dev/surgical-code-edits" pull --ff-only
+git -C "$HOME/dev/diff-suture" pull --ff-only
 ```
 
 Restart active agent sessions if they cache skill metadata.
@@ -333,9 +334,9 @@ Restart active agent sessions if they cache skill metadata.
 Remove only the links or checkout you created. For the recommended shared installation:
 
 ```bash
-rm "$HOME/.agents/skills/surgical-code-edits"
-rm "$HOME/.claude/skills/surgical-code-edits"
-rm -rf "$HOME/dev/surgical-code-edits"
+rm "$HOME/.agents/skills/diff-suture"
+rm "$HOME/.claude/skills/diff-suture"
+rm -rf "$HOME/dev/diff-suture"
 ```
 
 Review each path before removal, especially if you installed a real directory instead of a symbolic link.
@@ -377,8 +378,12 @@ Agent skills are instructions that can influence tool use. Review `SKILL.md` and
 
 This skill does not require network access, API keys, credentials, or external services. The metrics helper reads only the files explicitly provided to it and stores its state locally.
 
+## License
+
+Diff Suture is licensed under the [Apache License 2.0](LICENSE). You may use, modify, and distribute it, including commercially, subject to the license terms.
+
 ## Repository description
 
 Suggested GitHub description:
 
-> Portable Agent Skill for precise, standards-compliant code edits with minimal diff churn and local projected token-savings telemetry.
+> Diff Suture is a portable Agent Skill for precise, standards-compliant code edits with minimal diff churn and local projected token-savings telemetry.
