@@ -6,7 +6,7 @@
 
 It is designed for the frustrating class of edits where a one-property, one-variable, or one-word change unexpectedly becomes a large delete-and-rewrite diff. The skill asks the agent to preserve unrelated content, edit the smallest useful construct, inspect the resulting diff, and correct unnecessary churn before finishing.
 
-The repository also includes an optional local metrics helper that counts completed uses and estimates how much edit payload was avoided compared with rewriting changed files in full.
+The repository also includes a local metrics helper that counts completed uses and estimates how much edit payload was avoided compared with rewriting changed files in full. When the skill changes files, its completion contract requires these values in the agent's final response.
 
 ## Why this exists
 
@@ -226,10 +226,10 @@ python3 <skill-root>/scripts/usage_metrics.py start <files...>
 python3 <skill-root>/scripts/usage_metrics.py track <session-id> <files...>
 
 # After the final diff check
-python3 <skill-root>/scripts/usage_metrics.py finish <session-id> --json
+python3 <skill-root>/scripts/usage_metrics.py finish <session-id>
 ```
 
-The agent should include the per-use and cumulative estimates in its final response.
+The agent must include the returned per-use and cumulative estimates under a `Diff Suture feedback` heading in its final response. When no files changed, it reports that metrics were not recorded. If measurement fails, it reports that feedback is unavailable and explains why instead of silently omitting the section.
 
 ### Manual commands
 

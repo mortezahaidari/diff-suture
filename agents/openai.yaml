@@ -1,4 +1,4 @@
 interface:
   display_name: "Diff Suture"
-  short_description: "Make precise code changes without diff churn"
-  default_prompt: "Use $diff-suture to make this change with the smallest correct patch."
+  short_description: "Make precise edits and report estimated savings"
+  default_prompt: "Use $diff-suture to make the smallest correct patch and include its required feedback values."

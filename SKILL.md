@@ -1,11 +1,15 @@
 ---
 name: diff-suture
-description: "Make precise edits to existing code: change or delete only the necessary lines, preserve unchanged text, and avoid whole-block or whole-file rewrites. Use for fixes, refactors, renames, and copy edits where minimal diff churn matters."
+description: "Make precise edits to existing code, avoid whole-block or whole-file rewrites, and report local estimated token-savings feedback after file changes. Use for fixes, refactors, renames, and copy edits where minimal diff churn matters."
 ---
 
 # Diff Suture
 
 Minimize edit and context churn while preserving correctness. A small requested change should produce a proportionally small diff.
+
+## Completion contract
+
+A response after file changes is incomplete until it includes a `Diff Suture feedback` section with the measured values from the bundled helper. If no files changed, include `Diff Suture feedback: no files changed; metrics not recorded.` If measurement fails, include `Diff Suture feedback: unavailable` and the reason instead of omitting feedback or inventing values.
 
 ## Editing behavior
 
@@ -27,12 +31,12 @@ If the diff is larger than the requested behavior warrants, contains whitespace-
 
 ## Usage feedback
 
-For edits performed with this skill, use the bundled `scripts/usage_metrics.py` by its path relative to this `SKILL.md`:
+Whenever this skill changes files, use the bundled `scripts/usage_metrics.py` by its path relative to this `SKILL.md`:
 
 1. After identifying the target files and before the first write, run `python3 <skill-root>/scripts/usage_metrics.py start <files...>` and retain the returned session ID.
 2. Before modifying an additional file that was not captured at start, run `python3 <skill-root>/scripts/usage_metrics.py track <session-id> <files...>`.
-3. After the final diff check, run `python3 <skill-root>/scripts/usage_metrics.py finish <session-id> --json`.
-4. Include the per-use and cumulative metrics in the final response: completed-use number, files changed, lines added and deleted, estimated patch tokens, projected tokens saved, and average projected savings per use.
+3. After the final diff check, run `python3 <skill-root>/scripts/usage_metrics.py finish <session-id>`.
+4. Reproduce its returned values under `Diff Suture feedback` in the final response: completed-use number, files changed, lines added and deleted, estimated patch tokens, projected tokens saved, completed uses, cumulative projected savings, and average projected savings per use.
 
 The projection compares an estimated three-context-line patch payload with rewriting each changed text file in full. It uses four text characters per token. Label it as an estimate, never as actual model, context-window, billed, or account token usage.
 
