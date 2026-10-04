@@ -1,0 +1,4 @@
+interface:
+  display_name: "Surgical Code Edits"
+  short_description: "Make precise code changes without diff churn"
+  default_prompt: "Use $surgical-code-edits to make this change with the smallest correct patch."
